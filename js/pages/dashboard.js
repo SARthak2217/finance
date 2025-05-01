@@ -1,6 +1,3 @@
-/**
- * Dashboard page component
- */
 function DashboardPage() {
   // Get user data
   const user = Auth.state.user;
@@ -145,17 +142,7 @@ function DashboardPage() {
     createElement('div', {
       className: 'text-xs text-muted-foreground',
       id: 'expense-count'
-    }, '0 expense entries'),
-    createElement('div', {
-      className: 'progress-bar mt-4',
-      id: 'expense-progress'
-    }, [
-      createElement('div', {
-        className: 'progress-bar-fill',
-        id: 'expense-progress-fill',
-        style: { width: '0%' }
-      })
-    ])
+    }, '0 expense entries')
   ]);
   
   expensesCard.appendChild(expensesHeader);
@@ -191,17 +178,7 @@ function DashboardPage() {
     createElement('div', {
       className: 'text-xs text-muted-foreground',
       id: 'savings-status'
-    }, 'Calculating savings...'),
-    createElement('div', {
-      className: 'progress-bar mt-4',
-      id: 'savings-progress'
-    }, [
-      createElement('div', {
-        className: 'progress-bar-fill',
-        id: 'savings-progress-fill',
-        style: { width: '0%' }
-      })
-    ])
+    }, 'Calculating savings...')
   ]);
   
   savingsCard.appendChild(savingsHeader);
@@ -238,12 +215,6 @@ function DashboardPage() {
       document.getElementById('expense-count').textContent = 
         `${expenses.length} expense entries`;
       
-      // Calculate and update progress bars
-      if (monthlyIncome > 0) {
-        const expenseRatio = Math.min((totalExpenses / monthlyIncome) * 100, 100);
-        document.getElementById('expense-progress-fill').style.width = `${expenseRatio}%`;
-      }
-      
       // Update savings
       const savingsIcon = monthlySavings >= 0 ? 'arrow-up-right' : 'arrow-down-right';
       const savingsColor = monthlySavings >= 0 ? 'text-green-500' : 'text-red-500';
@@ -255,15 +226,6 @@ function DashboardPage() {
       
       document.getElementById('savings-status').textContent = 
         monthlySavings >= 0 ? 'Positive savings' : 'Overspending';
-        
-      if (monthlyIncome > 0) {
-        const savingsRatio = monthlySavings >= 0 
-          ? Math.min((monthlySavings / monthlyIncome) * 100, 100)
-          : 0;
-        document.getElementById('savings-progress-fill').style.width = `${savingsRatio}%`;
-        document.getElementById('savings-progress-fill').style.background = 
-          monthlySavings >= 0 ? 'linear-gradient(90deg, var(--green) 0%, var(--green) 100%)' : null;
-      }
       
       // Refresh icons
       feather.replace();

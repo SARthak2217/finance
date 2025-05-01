@@ -1,12 +1,6 @@
-
-/**
- * Add Expense page component
- */
 function AddExpensePage() {
-  // Get user data
   const user = Auth.state.user;
   
-  // Define expense categories
   const EXPENSE_CATEGORIES = [
     'Food', 
     'Housing', 
@@ -20,21 +14,17 @@ function AddExpensePage() {
     'Other'
   ];
   
-  // Create main content
   const content = createElement('div', {});
   
-  // Page title
   const pageTitle = createElement('h1', {
     className: 'page-title'
   }, 'Add New Expense');
   content.appendChild(pageTitle);
   
-  // Expense form card
   const formCard = createElement('div', {
     className: 'card'
   });
   
-  // Card header
   const cardHeader = createElement('div', {
     className: 'card-header'
   }, [
@@ -54,7 +44,6 @@ function AddExpensePage() {
     }, 'Enter the details of your expense')
   ]);
   
-  // Error message (hidden by default)
   const errorAlert = createElement('div', {
     className: 'alert alert-error hidden',
     id: 'expense-error'
@@ -69,7 +58,6 @@ function AddExpensePage() {
     }, '')
   ]);
   
-  // Expense name field
   const nameGroup = createElement('div', {
     className: 'form-group'
   }, [
@@ -131,7 +119,6 @@ function AddExpensePage() {
     ])
   ]);
   
-  // Date field
   const dateGroup = createElement('div', {
     className: 'form-group'
   }, [
@@ -149,7 +136,6 @@ function AddExpensePage() {
     })
   ]);
   
-  // Submit button
   const submitButtonContainer = createElement('div', {
     className: 'pt-4'
   }, [
@@ -160,7 +146,6 @@ function AddExpensePage() {
     }, 'Add Expense')
   ]);
   
-  // Form element
   const form = createElement('form', {
     className: 'space-y-4',
     id: 'expense-form',
@@ -174,21 +159,17 @@ function AddExpensePage() {
     submitButtonContainer
   ]);
   
-  // Card content
   const cardContent = createElement('div', {
     className: 'card-content'
   }, [form]);
   
-  // Append card parts
   formCard.appendChild(cardHeader);
   formCard.appendChild(cardContent);
   content.appendChild(formCard);
   
-  // Form submission handler
   async function handleSubmit(e) {
     e.preventDefault();
     
-    // Get form values
     const name = document.getElementById('expense-name').value.trim();
     const amountStr = document.getElementById('expense-amount').value.trim();
     const category = document.getElementById('expense-category').value;
@@ -198,7 +179,6 @@ function AddExpensePage() {
     const errorMessageElement = document.getElementById('error-message');
     const submitButton = document.getElementById('add-expense-btn');
     
-    // Validate user is logged in
     if (!user) {
       errorMessageElement.textContent = 'User not authenticated';
       errorElement.classList.remove('hidden');
@@ -206,7 +186,6 @@ function AddExpensePage() {
       return;
     }
     
-    // Validate all fields are present
     if (!name || !amountStr || !category || !date) {
       errorMessageElement.textContent = 'All fields are required';
       errorElement.classList.remove('hidden');
@@ -214,7 +193,6 @@ function AddExpensePage() {
       return;
     }
     
-    // Validate amount is a positive number
     const amount = parseFloat(amountStr);
     if (isNaN(amount) || amount <= 0) {
       errorMessageElement.textContent = 'Please enter a valid amount';
@@ -223,15 +201,12 @@ function AddExpensePage() {
       return;
     }
     
-    // Hide previous errors
     errorElement.classList.add('hidden');
     
     try {
-      // Show loading state
       submitButton.disabled = true;
       submitButton.textContent = 'Adding Expense...';
       
-      // Submit expense
       await ExpenseAPI.addExpense({
         userId: user.id,
         name,
@@ -240,32 +215,25 @@ function AddExpensePage() {
         date
       });
       
-      // Reset form
       document.getElementById('expense-form').reset();
       document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
       
-      // Show success message
       showToast('Expense added successfully', 'success');
       
-      // Navigate to expenses page
       Router.navigate('/expenses');
     } catch (error) {
-      // Show error message
       errorMessageElement.textContent = error.message || 'Failed to add expense';
       errorElement.classList.remove('hidden');
       feather.replace();
     } finally {
-      // Reset button state
       submitButton.disabled = false;
       submitButton.textContent = 'Add Expense';
     }
   }
   
-  // Initialize feather icons
   setTimeout(() => {
     feather.replace();
   }, 0);
   
-  // Wrap content in layout
   return Layout(content);
 }

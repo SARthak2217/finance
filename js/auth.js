@@ -1,21 +1,12 @@
-
-/**
- * Authentication management for expense tracker application
- */
-
-// Auth state management
 const Auth = {
-  // Current state
   state: {
     isAuthenticated: false,
     user: null,
     loading: true
   },
   
-  // Event listeners
   listeners: [],
   
-  // Subscribe to auth state changes
   subscribe(listener) {
     this.listeners.push(listener);
     return () => {
@@ -23,12 +14,10 @@ const Auth = {
     };
   },
   
-  // Notify all listeners of state change
   notify() {
     this.listeners.forEach(listener => listener(this.state));
   },
   
-  // Initialize auth state from local storage
   async init() {
     const userId = localStorage.getItem('userId');
     if (userId) {
@@ -61,7 +50,6 @@ const Auth = {
     this.notify();
   },
   
-  // Login a user
   async login(email, password) {
     try {
       this.state.loading = true;
@@ -85,7 +73,6 @@ const Auth = {
     }
   },
   
-  // Register a new user
   async register(username, email, password) {
     try {
       this.state.loading = true;
@@ -109,7 +96,6 @@ const Auth = {
     }
   },
   
-  // Logout current user
   logout() {
     localStorage.removeItem('userId');
     
@@ -123,7 +109,6 @@ const Auth = {
     Router.navigate('/login');
   },
   
-  // Update user income
   async updateIncome(income) {
     if (!this.state.user) return;
     

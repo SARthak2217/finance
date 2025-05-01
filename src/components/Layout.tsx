@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -114,13 +113,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {user && (
               <div className="flex items-center mb-4 p-3 rounded-lg bg-sidebar-accent/50">
                 <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-medium">
-                  {user.name?.[0] || user.email?.[0] || 'U'}
+                  {(user.name && user.name[0]) || (user.email && user.email[0]) || 'U'}
                 </div>
                 <div className="ml-3 overflow-hidden">
                   <p className="text-sm font-medium text-sidebar-foreground truncate">
-                    {user.name || user.email}
+                    {user.name || user.email || 'Anonymous'}
                   </p>
-                  {user.name && (
+                  {user.name && user.email && (
                     <p className="text-xs text-sidebar-foreground/60 truncate">
                       {user.email}
                     </p>

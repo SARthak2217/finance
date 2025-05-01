@@ -1,8 +1,3 @@
-/**
- * Utility functions for the expense tracker application
- */
-
-// Format a date as MMM DD, YYYY (e.g. Jan 01, 2023)
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -12,16 +7,13 @@ function formatDate(dateString) {
   });
 }
 
-// Format currency as X.XX
 function formatCurrency(amount) {
   return parseFloat(amount).toFixed(2);
 }
 
-// Create HTML element with properties
 function createElement(tag, props = {}, children = []) {
   const element = document.createElement(tag);
   
-  // Set all properties
   Object.entries(props).forEach(([key, value]) => {
     if (key === 'className') {
       element.className = value;
@@ -37,7 +29,6 @@ function createElement(tag, props = {}, children = []) {
     }
   });
   
-  // Append all children
   if (Array.isArray(children)) {
     children.forEach(child => {
       if (child !== null && child !== undefined) {
@@ -55,9 +46,7 @@ function createElement(tag, props = {}, children = []) {
   return element;
 }
 
-// Show a toast notification
 function showToast(message, type = 'info') {
-  // Create toast container if it doesn't exist
   let toastContainer = document.querySelector('.toast-container');
   if (!toastContainer) {
     toastContainer = createElement('div', {
@@ -65,7 +54,6 @@ function showToast(message, type = 'info') {
     });
     document.body.appendChild(toastContainer);
     
-    // Add styles
     const style = document.createElement('style');
     style.textContent = `
       .toast-container {
@@ -108,14 +96,12 @@ function showToast(message, type = 'info') {
     document.head.appendChild(style);
   }
   
-  // Create toast element
   const toast = createElement('div', {
     className: `toast toast-${type}`
   }, message);
   
   toastContainer.appendChild(toast);
   
-  // Remove after 3 seconds
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(100%)';
@@ -127,7 +113,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
-// Generate UUID
 function generateUUID() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }

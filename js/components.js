@@ -1,24 +1,15 @@
-
-/**
- * Reusable UI components for the expense tracker application
- */
-
-// Layout component with sidebar
 function Layout(content) {
   const userId = localStorage.getItem('userId');
   
-  // Main container
   const container = createElement('div', {
     className: 'flex min-h-screen',
   });
   
-  // Create sidebar
   const sidebar = createElement('div', {
     className: 'sidebar',
     id: 'sidebar'
   });
   
-  // Sidebar header
   const sidebarHeader = createElement('div', {
     className: 'sidebar-header'
   }, [
@@ -32,14 +23,11 @@ function Layout(content) {
     ])
   ]);
   
-  // Get current path to determine active link
   const currentPath = window.location.pathname;
   
-  // Sidebar nav
   const sidebarNav = createElement('ul', {
     className: 'sidebar-nav'
   }, [
-    // Dashboard link
     createElement('li', {
       className: 'sidebar-nav-item'
     }, [
@@ -54,7 +42,6 @@ function Layout(content) {
         'Dashboard'
       ])
     ]),
-    // Expenses link
     createElement('li', {
       className: 'sidebar-nav-item'
     }, [
@@ -69,7 +56,6 @@ function Layout(content) {
         'Expenses'
       ])
     ]),
-    // Add Expense link
     createElement('li', {
       className: 'sidebar-nav-item'
     }, [
@@ -86,16 +72,13 @@ function Layout(content) {
     ])
   ]);
   
-  // Sidebar content
   const sidebarContent = createElement('div', {
     className: 'sidebar-content'
   }, [sidebarNav]);
   
-  // Get user data for sidebar footer
   const user = Auth.state.user;
   const username = user ? user.username : '';
   
-  // Sidebar footer with user info and logout button
   const sidebarFooter = createElement('div', {
     className: 'sidebar-footer'
   }, [
@@ -128,12 +111,10 @@ function Layout(content) {
     ])
   ]);
   
-  // Append all sidebar elements
   sidebar.appendChild(sidebarHeader);
   sidebar.appendChild(sidebarContent);
   sidebar.appendChild(sidebarFooter);
   
-  // Create main content
   const mainContent = createElement('div', {
     className: 'main-content'
   }, [
@@ -142,7 +123,6 @@ function Layout(content) {
     }, [content])
   ]);
   
-  // Mobile menu button
   const mobileMenuBtn = createElement('button', {
     className: 'mobile-menu-btn',
     onclick: () => toggleSidebar()
@@ -153,26 +133,22 @@ function Layout(content) {
     })
   ]);
   
-  // Overlay for mobile
   const overlay = createElement('div', {
     className: 'overlay',
     id: 'sidebar-overlay',
     onclick: () => toggleSidebar()
   });
   
-  // Toggle sidebar function for mobile
   function toggleSidebar() {
     sidebar.classList.toggle('open');
     overlay.classList.toggle('active');
   }
   
-  // Append all components
   container.appendChild(sidebar);
   container.appendChild(mainContent);
   container.appendChild(mobileMenuBtn);
   container.appendChild(overlay);
   
-  // Initialize feather icons after DOM is ready
   setTimeout(() => {
     feather.replace();
   }, 0);
@@ -180,7 +156,6 @@ function Layout(content) {
   return container;
 }
 
-// Not found page component
 function NotFoundPage() {
   const container = createElement('div', {
     className: 'flex items-center justify-center min-h-screen'
@@ -205,9 +180,7 @@ function NotFoundPage() {
   return container;
 }
 
-// Modified toast function for improved visuals
 function showToast(message, type = 'info') {
-  // Create toast container if it doesn't exist
   let toastContainer = document.querySelector('.toast-container');
   if (!toastContainer) {
     toastContainer = createElement('div', {
@@ -215,7 +188,6 @@ function showToast(message, type = 'info') {
     });
     document.body.appendChild(toastContainer);
     
-    // Add styles
     const style = document.createElement('style');
     style.textContent = `
       .toast-container {
@@ -267,14 +239,12 @@ function showToast(message, type = 'info') {
     document.head.appendChild(style);
   }
   
-  // Map type to icon
   const iconMap = {
     info: 'info',
     success: 'check-circle',
     error: 'alert-circle'
   };
   
-  // Create toast element
   const toast = createElement('div', {
     className: `toast toast-${type}`
   }, [
@@ -287,10 +257,8 @@ function showToast(message, type = 'info') {
   
   toastContainer.appendChild(toast);
   
-  // Initialize feather icons in toast
   feather.replace();
   
-  // Remove after 3 seconds
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(100%)';

@@ -1,19 +1,13 @@
 
-/**
- * Login page component
- */
 function LoginPage() {
-  // Create container
   const container = createElement('div', {
     className: 'auth-container'
   });
   
-  // Create card
   const card = createElement('div', {
     className: 'auth-card card'
   });
   
-  // Card header
   const cardHeader = createElement('div', {
     className: 'card-header text-center'
   }, [
@@ -25,7 +19,6 @@ function LoginPage() {
     }, 'Enter your credentials to access your account')
   ]);
   
-  // Error message (hidden by default)
   const errorAlert = createElement('div', {
     className: 'alert alert-error hidden',
     id: 'login-error'
@@ -40,7 +33,6 @@ function LoginPage() {
     }, '')
   ]);
   
-  // Email input field
   const emailGroup = createElement('div', {
     className: 'form-group'
   }, [
@@ -57,7 +49,6 @@ function LoginPage() {
     })
   ]);
   
-  // Password input field
   const passwordGroup = createElement('div', {
     className: 'form-group'
   }, [
@@ -74,14 +65,12 @@ function LoginPage() {
     })
   ]);
   
-  // Submit button
   const submitButton = createElement('button', {
     className: 'btn btn-primary btn-block',
     id: 'login-button',
     type: 'submit'
   }, 'Sign In');
   
-  // Form element
   const form = createElement('form', {
     className: 'space-y-4',
     id: 'login-form',
@@ -95,7 +84,6 @@ function LoginPage() {
     }, [submitButton])
   ]);
   
-  // Register link
   const registerLink = createElement('div', {
     className: 'mt-6 text-center text-sm'
   }, [
@@ -106,30 +94,24 @@ function LoginPage() {
     }, 'Sign up')
   ]);
   
-  // Card content
   const cardContent = createElement('div', {
     className: 'card-content'
   }, [form, registerLink]);
   
-  // Append all elements to the card
   card.appendChild(cardHeader);
   card.appendChild(cardContent);
   
-  // Append card to container
   container.appendChild(card);
   
-  // Form submission handler
   async function handleSubmit(e) {
     e.preventDefault();
     
-    // Get form values
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
     const errorElement = document.getElementById('login-error');
     const errorMessageElement = document.getElementById('error-message');
     const loginButton = document.getElementById('login-button');
     
-    // Validate inputs
     if (!email || !password) {
       errorMessageElement.textContent = 'Email and password are required';
       errorElement.classList.remove('hidden');
@@ -137,33 +119,26 @@ function LoginPage() {
       return;
     }
     
-    // Hide previous errors
     errorElement.classList.add('hidden');
     
     try {
-      // Show loading state
       loginButton.disabled = true;
       loginButton.innerHTML = 'Signing In...';
       
-      // Attempt login
       await Auth.login(email, password);
       
-      // Show success message and redirect
       showToast('Successfully signed in', 'success');
       Router.navigate('/dashboard');
     } catch (error) {
-      // Show error message
       errorMessageElement.textContent = error.message || 'Invalid email or password';
       errorElement.classList.remove('hidden');
       feather.replace();
     } finally {
-      // Reset button state
       loginButton.disabled = false;
       loginButton.innerHTML = 'Sign In';
     }
   }
   
-  // Initialize feather icons
   setTimeout(() => {
     feather.replace();
   }, 0);

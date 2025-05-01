@@ -1,10 +1,3 @@
-
-/**
- * API interactions for the expense tracker application
- * This simulates backend API calls using local storage
- */
-
-// Initialize local storage with empty data structures if they don't exist
 function initializeLocalStorage() {
   if (!localStorage.getItem('expense_tracker_users')) {
     localStorage.setItem('expense_tracker_users', JSON.stringify([]));
@@ -15,26 +8,21 @@ function initializeLocalStorage() {
   }
 }
 
-// Initialize on page load
 initializeLocalStorage();
 
-// User API
 const UserAPI = {
-  // Register a new user
   register: async function(userData) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           const users = JSON.parse(localStorage.getItem('expense_tracker_users') || '[]');
           
-          // Check if email already exists
           const existingUser = users.find(user => user.email === userData.email);
           if (existingUser) {
             reject(new Error('User with this email already exists'));
             return;
           }
           
-          // Create new user
           const newUser = {
             ...userData,
             id: generateUUID(),
@@ -44,17 +32,15 @@ const UserAPI = {
           users.push(newUser);
           localStorage.setItem('expense_tracker_users', JSON.stringify(users));
           
-          // Return user without password for security
           const { password, ...userWithoutPassword } = newUser;
           resolve(newUser);
         } catch (error) {
           reject(new Error('Failed to register user'));
         }
-      }, 500); // simulate network delay
+      }, 500);
     });
   },
   
-  // Login a user
   login: async function(email, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -74,7 +60,6 @@ const UserAPI = {
     });
   },
   
-  // Get current user
   getCurrentUser: async function(userId) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -94,7 +79,6 @@ const UserAPI = {
     });
   },
   
-  // Update user's annual income
   updateIncome: async function(userId, annualIncome) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -117,16 +101,13 @@ const UserAPI = {
   }
 };
 
-// Expense API
 const ExpenseAPI = {
-  // Add a new expense
   addExpense: async function(expenseData) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           const expenses = JSON.parse(localStorage.getItem('expense_tracker_expenses') || '[]');
           
-          // Create new expense
           const newExpense = {
             ...expenseData,
             id: generateUUID()
@@ -143,7 +124,6 @@ const ExpenseAPI = {
     });
   },
   
-  // Get all expenses for a user
   getUserExpenses: async function(userId) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -159,7 +139,6 @@ const ExpenseAPI = {
     });
   },
   
-  // Delete an expense
   deleteExpense: async function(expenseId) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {

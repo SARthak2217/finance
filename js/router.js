@@ -1,13 +1,6 @@
-
-/**
- * Simple client-side router for the expense tracker application
- */
-
 const Router = {
-  // Current route
   currentRoute: '/',
   
-  // Routes configuration
   routes: {
     '/': {
       redirectIfAuth: '/dashboard',
@@ -38,17 +31,13 @@ const Router = {
     }
   },
   
-  // Initialize router
   init() {
-    // Handle initial route
     this.handleRouteChange();
     
-    // Add event listener for popstate (browser back/forward)
     window.addEventListener('popstate', () => {
       this.handleRouteChange();
     });
     
-    // Intercept link clicks for SPA navigation
     document.addEventListener('click', (e) => {
       const link = e.target.closest('a');
       if (link && link.href.startsWith(window.location.origin)) {
@@ -58,36 +47,27 @@ const Router = {
       }
     });
     
-    // Subscribe to auth state changes to handle redirects
     Auth.subscribe(() => {
       this.handleRouteChange();
     });
   },
   
-  // Navigate to a route
   navigate(path) {
-    // Push state to history
     window.history.pushState(null, '', path);
-    // Handle the route change
     this.handleRouteChange();
   },
   
-  // Handle route changes
   handleRouteChange() {
-    // Get current path
     const path = window.location.pathname;
     this.currentRoute = path;
     
-    // Find route config
     let route = this.routes[path];
     
-    // Default to not-found if route doesn't exist
     if (!route) {
       route = this.routes['/not-found'];
       this.currentRoute = '/not-found';
     }
     
-    // Handle authentication redirects
     if (Auth.state.loading) {
       this.showLoading();
       return;
@@ -108,11 +88,9 @@ const Router = {
       return;
     }
     
-    // Render the component
     this.renderComponent(route.component);
   },
   
-  // Show loading state
   showLoading() {
     const appElement = document.getElementById('app');
     appElement.innerHTML = '';
@@ -135,12 +113,10 @@ const Router = {
     appElement.appendChild(loadingElement);
   },
   
-  // Render a component
   renderComponent(componentName) {
     const appElement = document.getElementById('app');
     appElement.innerHTML = '';
     
-    // Initialize the component
     if (typeof window[componentName] === 'function') {
       const component = window[componentName]();
       appElement.appendChild(component);
